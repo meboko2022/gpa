@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/gpa/static/css/main.40425d32.css",
+    "main.js": "/gpa/static/js/main.c5f7bfef.js",
+    "static/js/787.9c2d2c66.chunk.js": "/gpa/static/js/787.9c2d2c66.chunk.js",
+    "static/media/MS-04.png": "/gpa/static/media/MS-04.f6278c557c35fea908b9.png",
+    "index.html": "/gpa/index.html",
+    "main.40425d32.css.map": "/gpa/static/css/main.40425d32.css.map",
+    "main.c5f7bfef.js.map": "/gpa/static/js/main.c5f7bfef.js.map",
+    "787.9c2d2c66.chunk.js.map": "/gpa/static/js/787.9c2d2c66.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.40425d32.css",
+    "static/js/main.c5f7bfef.js"
+  ]
+}
