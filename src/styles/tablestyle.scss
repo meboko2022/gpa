@@ -1,0 +1,31 @@
+.space-table {
+  font-size: 14px;
+    display: flex;
+    margin: 24px 0;
+    table {
+      background: #fff;
+      border-radius: 5px;
+      tr{
+        button:first-child{
+          margin-right: 15px;
+          background: #3BCCE4;
+        }
+  
+      }
+  
+      
+
+      td:last-child{
+          display: flex;
+          justify-content: center;
+      }
+      button {
+        padding: 10px 25px;
+        border: none;
+        font-size: 14px;
+        border-radius: 5px;
+        background: #F3706A;
+        color: #fff;
+      }
+    }
+  }

@@ -1,0 +1,49 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 315px;
+  height: 100vh;
+  flex: 1;
+  background: #f8f9fa;
+  .logo_space {
+    top: 0;
+    width: 100%;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .sidebar_menu {
+    padding: 15px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    a {
+      color: #000;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      margin-top: 25px;
+      font-size: 14px;
+      font-weight: 500;
+
+      .fa_font{
+        margin-right: 15px;
+      }
+    }
+
+    .navDown {
+        font-size: 14px;
+        margin-top: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 45px;
+        font-weight: 400;
+        .fa_font {
+          margin-right: 15px;
+        }
+      }
+  }
+}
