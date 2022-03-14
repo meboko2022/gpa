@@ -1,18 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
-import { applyMiddleware } from "redux";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "../src/styles/main.scss";
+
+import { createStore } from "redux";
+import { applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers";
+import { Provider } from "react-redux";
 import { getNiveau } from "./actions/niveau.action";
 import { getInstitution } from "./actions/institutions.action";
-import { Provider } from "react-redux";
+import { getStructures } from "./actions/structure.action";
 import { getVehicules } from "./actions/vehicules.action";
 import { getChauffeurs } from "./actions/chauffeurs.action";
+import { getTypesUtilisateur } from "./actions/typeUtilisateur.action";
+import { getUtilisateurs } from "./actions/utilisateur.action";
+
+
 
 const store = createStore(
   rootReducer,
@@ -20,9 +26,13 @@ const store = createStore(
 );
 
 store.dispatch(getNiveau());
-store.dispatch(getInstitution())
-store.dispatch(getVehicules())
-store.dispatch(getChauffeurs())
+store.dispatch(getInstitution());
+store.dispatch(getVehicules());
+store.dispatch(getChauffeurs());
+store.dispatch(getTypesUtilisateur());
+store.dispatch(getUtilisateurs());
+store.dispatch(getStructures());
+
 ReactDOM.render(
   <Provider store={store}>
      <React.StrictMode>

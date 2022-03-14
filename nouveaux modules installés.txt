@@ -1,0 +1,4 @@
+npm install react-hook-form
+npm install @hookform/resolvers yup
+npm install @types/react --dev
+

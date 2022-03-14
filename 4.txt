@@ -1,0 +1,111 @@
+<Container>
+      <p className="callBack" onClick={() => navigate("/structure")}>
+        <FontAwesomeIcon className="fa_font" icon={faArrowLeft} /> Retour à
+        liste des structures
+      </p>
+
+      <h1 className="page_title">Formulaire de modification d'une structure</h1>
+
+    <div className="editForm">
+      
+    <form onSubmit={handleSubmit(onSubmit)}>
+
+      <div className="form-group mb-3">
+          <label htmlFor="institution">
+              Institution:
+          </label>
+          <select
+            className="form-control"
+            {...register("institution")}
+            name="institution"
+            id="institution"
+            onChange={(e) => setEditInstitution(e.target.value)}
+            value={editInstitution}
+          >
+              <option value="">{editInstitution}</option>
+              {!isEmpty(institutions) &&
+                  institutions.map((institution) => (
+                  <option key={institution.id} value={institution.id}>
+                  {institution.libelle}
+              </option>
+              ))}               
+          </select>
+          <small className="text-danger">
+              {errors.institution?.message}
+          </small>
+      </div>
+
+
+      <div className="form-group mb-3">
+          <label htmlFor="libelle">
+              Libellé :
+          </label>
+          <input
+              type="text"
+              className="input_form"
+              {...register("libelle")}
+              name="libelle"
+              id="libelle"              
+              onChange={(e) => setEditLibelle(e.target.value)}
+              value={editLibelle}              
+          />
+          <small className="text-danger">
+              {errors.libelle?.message}
+          </small>
+      </div>
+
+      <div className="form-group mb-3">
+          <label htmlFor="responsable">
+              Responsable :
+          </label>
+          <input
+              type="text"
+              className="form-control"
+              {...register("responsable")}
+              name="responsable"
+              id="responsable"
+              onChange={(e) => setEditResponsable(e.target.value)}
+              value={editResponsable}
+          />
+          <small className="text-danger">
+              {errors.responsable?.message}
+          </small>
+      </div>
+
+      <div className="form-group mb-3">
+          <label htmlFor="telephone">
+              Téléphone :
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            {...register("telephone")}
+            name="telephone"
+            id="telephone"
+            onChange={(e) => setEditTelephone(e.target.value)}
+            value={editTelephone}
+          />
+          <small className="text-danger">
+              {errors.telephone?.message}
+          </small>
+      </div>
+
+      <div className="form-group d-flex justify-content-center mt-4 justify-content-md-end gap-3">
+          <button
+              type="submit"
+              className="btn btn-primary"
+          >
+              Enregistrer les modifications
+                   </button>
+                   <button
+                       type="button"
+                       className="btn btn-danger"
+                       onClick={() => reset()}
+                   >
+                       Annuler
+                   </button>
+               </div>
+    </form>
+  </div>
+</Container>
+

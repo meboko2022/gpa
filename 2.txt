@@ -1,0 +1,204 @@
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from "yup";
+
+
+
+//import { editStructure } from "../actions/structure.action";
+import { addStructure, getStructures } from "../actions/structure.action";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import isEmpty from "../assets/images/utils/Utils";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+
+export const FormEditStructure = () => {
+  const [editInstitution, setEditInstitution] = useState("");
+  const [editLibelle, setEditLibelle] = useState("");
+  const [editResponsable, setEditResponsable] = useState("");
+  const [editTelephone, setEditTelephone] = useState("");  
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const structures = useSelector((state) => state.structuresReducer);
+  const institutions = useSelector((state) => state.institutionsReducer);
+  let navigate = useNavigate();
+
+
+  
+  const structuresFilter = structures.filter((i) => i.id === parseInt(id));
+  useEffect(() => {
+    if (structuresFilter.length > 0) {
+      setEditInstitution(structuresFilter[0].institution.id);
+      setEditLibelle(structuresFilter[0].libelle);
+      setEditResponsable(structuresFilter[0].responsable);
+      setEditTelephone(structuresFilter[0].telephone);
+    }
+  }, []);
+
+  const validationSchema = Yup.object().shape({
+    institution: Yup.string()
+        .required("ce champ est obligatoire"),
+    libelle: Yup.string()
+        .required("ce champ est obligatoire"),
+    responsable: Yup.string()
+        .required("ce champ est obligatoire"),
+    telephone: Yup.string()
+        .required("ce champ est obligatoire")    
+  });
+  
+  const { register, handleSubmit, formState, reset } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+  
+  const { errors } = formState;
+  
+  const onSubmit = data =>  {
+    if (data.institution && data.libelle && data.responsable && data.telephone) {
+      const champs = {
+        institution: { id: parseInt(data.institution) },
+        libelle: data.libelle,
+        responsable: data.responsable,        
+        telephone: data.telephone
+      };
+      
+    dispatch(addStructure(champs));
+    reset();   
+          
+    };
+    navigate("/structure");     
+    //dispatch(getStructures());   
+  }
+
+/*
+
+  const handleEdit = (e) => {
+    e.preventDefault();
+    const editData = {
+      institution: { id: parseInt(editInstitution) },
+      libelle: editLibelle,
+      id: parseInt(id),
+      responsable: editResponsable,
+      telephone: editTelephone,
+    };
+    dispatch(editStructure(editData));
+    navigate("/structure");
+  };
+*/
+  return (
+    <Container>
+        <h1 className="page_title">Formulaire d'édition d'une structure</h1>
+        <p className="callBack" onClick={() => navigate("/structure")}>
+          <FontAwesomeIcon className="fa_font" icon={faArrowLeft} /> Retour à
+          liste des structures
+        </p>
+        <h1 className="page_title">Modifier une structure</h1>
+        <div className="editForm">
+          
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h1 className="text-center">Modifier une structure</h1>
+          <div className="form-group mb-3">
+              <label htmlFor="institution">
+                  Institution:
+              </label>
+              <select
+                className="form-control"
+                {...register("institution")}
+                name="institution"
+                id="institution"
+                onChange={(e) => setEditInstitution(e.target.value)}
+                value={editInstitution}
+              >
+                  <option value="">{editInstitution}</option>
+                  {!isEmpty(institutions) &&
+                      institutions.map((institution) => (
+                      <option key={institution.id} value={institution.id}>
+                      {institution.libelle}
+                  </option>
+                  ))}               
+              </select>
+              <small className="text-danger">
+                  {errors.institution?.message}
+              </small>
+          </div>
+
+
+          <div className="form-group mb-3">
+              <label htmlFor="libelle">
+                  Libellé :
+              </label>
+              <input
+                  type="text"
+                  className="form-control"
+                  onChange={(e) => setEditLibelle(e.target.value)}
+                  value={editLibelle}
+                  {...register("libelle")}
+                  name="libelle"
+                  id="libelle"
+              />
+              <small className="text-danger">
+                  {errors.libelle?.message}
+              </small>
+          </div>
+
+          <div className="form-group mb-3">
+              <label htmlFor="responsable">
+                  Responsable :
+              </label>
+              <input
+                  type="text"
+                  className="form-control"
+                  {...register("responsable")}
+                  name="responsable"
+                  id="responsable"
+                  onChange={(e) => setEditResponsable(e.target.value)}
+                  value={editResponsable}
+              />
+              <small className="text-danger">
+                  {errors.responsable?.message}
+              </small>
+          </div>
+
+          <div className="form-group mb-3">
+              <label htmlFor="telephone">
+                  Téléphone :
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                {...register("telephone")}
+                name="telephone"
+                id="telephone"
+                onChange={(e) => setEditTelephone(e.target.value)}
+                value={editTelephone}
+              />
+              <small className="text-danger">
+                  {errors.telephone?.message}
+              </small>
+          </div>
+
+          <div className="form-group d-flex justify-content-center mt-4 justify-content-md-end gap-3">
+              <button
+                  type="submit"
+                  className="btn btn-primary"
+              >
+                  Enregistrer les modifications
+                       </button>
+                       <button
+                           type="button"
+                           className="btn btn-danger"
+                           onClick={() => reset()}
+                       >
+                           Annuler
+                       </button>
+                   </div>
+        </form>
+      </div>
+    </Container>
+  );
+};
+
+const Container = styled.div``;

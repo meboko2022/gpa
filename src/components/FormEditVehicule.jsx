@@ -54,7 +54,7 @@ export const FormEditVehicule = () => {
         <FontAwesomeIcon className="fa_font" icon={faArrowLeft} /> Retour à
         gestion de véhicules
       </p>
-      <h1 className="page_title">Ajouter un véhicule</h1>
+      <h1 className="page_title">Modifier un véhicule</h1>
       <div className="editForm">
         <form
           action=""

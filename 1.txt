@@ -6,8 +6,6 @@ import isEmpty from "../assets/images/utils/Utils";
 import { FormModal } from "../components/FormModal";
 import { useDispatch } from "react-redux";
 import { deleteNiveau } from "../actions/niveau.action";
-import { Link } from "react-router-dom";
-
 export const NiveauInstitution = () => {
   const niveaux = useSelector((state) => state.niveauReducer);
   let dispatch = useDispatch();
@@ -43,14 +41,14 @@ export const NiveauInstitution = () => {
                 <tr key={niveau.id}>
                   <td>{niveau.libelle}</td>
                   <td>
-                    <Link to={`/editerNiveau/${niveau.id}`}>
-                      <button>
-                        <FontAwesomeIcon icon={faEdit} className="fa_font" />
-                      </button>
-                    </Link>
+                    <button>
+                      <FontAwesomeIcon icon={faEdit} className="fa_font" />
+                      Modifier
+                    </button>
 
-                    <button onClick={() => dispatch(deleteNiveau(niveau.id))} >
+                    <button onClick={() => dispatch(deleteNiveau(niveau.id))}>
                       <FontAwesomeIcon icon={faTrash} className="fa_font" />
+                      Supprimer
                     </button>
                   </td>
                 </tr>

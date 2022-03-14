@@ -32,7 +32,7 @@ export const AjouterInstitution = () => {
   };
   return (
     <Container>
-      <h1 className='page_title'>Formulaire d'édition d'une institution</h1>
+      <h1 className='page_title'>Formulaire d'ajout d'une institution</h1>
       <div className="addForm">
         <form action="" onSubmit={(e) => handleForm(e)}>
           <div className="input_group">

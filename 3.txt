@@ -1,0 +1,194 @@
+import React from 'react';
+import {ScrollView, Text, View } from "react-native";
+
+import { tailwind } from "tailwind";
+import { Button } from "~/components/Button";
+import {InputGroup} from "~/components/InputGroup";
+import RadioButton from './components/RadioButton'
+
+import * as Yup from "yup";
+import { Contoller, Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookfrom/resolvers/yup";
+
+interface AjouterUtilisateurProps {}
+
+type FormValues = {
+  nom: String;
+  prenom: String;
+  //email: String;
+  password: String;
+  confirmPassword: String;
+  statutCompte:Boolean;
+};
+
+export const AjouterUtilisateur: React.FunctionComponent<AjouterUtilisateurProps> =
+  ({}) => {
+    const validationSchema = Yup.object({
+      nom: Yup.string().required("Veuillez saisir votre prénom"),
+      prenom: Yup.string().required("Veuillez saisir votre prénom"),
+      login: Yup.string().required("Veuillez saisir votre login"),
+      email: Yup.string()
+        .email("Veuillez saisir une adresse mail valide")
+        .required("Veuillez saisir une adresse mail"),
+      password: Yup.string()
+        .min(6, "Veuillez saisir au moins 6 caractères")
+        .required("Veuillez saisir un mot de passe"),
+      confirmPassword: Yup.string()
+        .required("Veuillez confirmer votre mot de passe")
+        .oneOf([Yup.ref("password")], "Les mots de passe ne correspondent pas")
+    }).required();
+  }
+
+  const {
+    control,
+    handleSubmit,
+    clearErrors,
+    formState: { errors },    
+  } = useForm<FormValues>({
+    mode: "onSubmit",
+    resolver: yupResolver(validationSchema),
+  });
+
+  const signup = () => {
+    clearErrors();
+    console.log("Create account here...");
+  };
+
+  return (
+    <ScrollView
+      style={tailwind("flex flex-1")}
+      contentContainerStyle={tailwind(" p-4 " )}
+    >
+
+    <Text style={tailwind("font-bold text-x1 mt-2")}>
+      Création de compte
+    </Text>
+    <Controller>
+      control={control}
+      name="nom"
+      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+        <InputGroup 
+          Label="Nom"
+          value={value}
+          placeholder="Saisir votre nom"
+          onBlur={onBlur}
+          error={!!error}
+          errorDetails={error?.Message}
+          onChangeText={onChange}
+        />
+      )}
+    </Controller>
+
+    <Controller>
+      control={control}
+      name="prenom"
+      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+        <InputGroup 
+          Label="Prénom"
+          value={value}
+          placeholder="Saisir votre prénom"
+          onBlur={onBlur}
+          error={!!error}
+          errorDetails={error?.Message}
+          onChangeText={onChange}
+        />
+      )}
+    </Controller>
+
+    <Controller>
+      control={control}
+      name="login"
+      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+        <InputGroup 
+          Label="Login"
+          value={value}
+          placeholder="Saisir votre login"
+          onBlur={onBlur}
+          error={!!error}
+          errorDetails={error?.Message}
+          onChangeText={onChange}
+        />
+      )}
+    </Controller>
+
+    <Controller>
+      control={control}
+      name="password"
+      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+        <InputGroup 
+          Label="Password"
+          value={value}
+          placeholder="Saisir votre mot de passe"
+          onBlur={onBlur}
+          error={!!error}
+          errorDetails={error?.Message}
+          onChangeText={onChange}
+        />
+      )}
+    </Controller>
+
+    <Controller>
+      control={control}
+      name="confirmPassword"
+      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+        <InputGroup 
+          Label="Confirmer le mot de passe"
+          value={value}
+          placeholder="Saisir à nouveau le mot de passe"
+          onBlur={onBlur}
+          error={!!error}
+          errorDetails={error?.Message}
+          onChangeText={onChange}
+        />
+      )}
+    </Controller>
+
+    <Controller>
+      control={control}
+      name="statutCompte"
+      render={({ field: { onChange, value, onBlur }, fieldState: { error } }) => (
+        <InputGroup 
+          type="radio"
+          Label="Statut du compte"
+          value={value}            
+          onChangeText={onChange}
+        />
+      )}
+    </Controller>
+
+    </ScrollView>
+  )
+
+
+
+/*
+interface InputGroupProps {
+  label?: string;
+  placeholder?: string;
+  value: string;
+  password?: Boolean;
+  type?: KeyboardTypeOptions;
+  onChangeText: (value: string) => void;
+  onBlur?: () => void;
+  error?: Boolean;
+  errorDetails?: string;
+}
+
+export const AjouterUtilisateur: React.FunctionComponent<InputGroupProps> = ({
+  label,
+  placeholder,
+  value,
+  password,
+  type = "default",
+  onChangeText,
+  onBlur,
+  error =  
+}) => {
+  return (
+    <View style = {tailwind("py-2")}>
+      {!!label}
+    </View>
+  )
+}
+}
+*/

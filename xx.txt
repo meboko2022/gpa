@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { editTypeUtilisateur } from '../actions/typeUtilisateur.action';
+//import { deleteTypeUtilisateur } from "../actions/typeUtilisateur.action";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+
+const FormTypeUtilisateur = ( { typeUtilisateur } ) => {   
+    const [editToggle, setEditToggle] = useState(false); 
+    const [editLibelle, setEditLibelle] = useState(typeUtilisateur.libelle);
+    const dispatch = useDispatch();    
+
+    
+    const handleEdit = (e) => {
+        console.log("bien ici");
+        e.preventDefault();
+
+        const data = {
+            libelle:editLibelle,
+            id:typeUtilisateur.id,
+        };
+        
+        dispatch(editTypeUtilisateur(data));
+        setEditToggle(false);
+        }
+
+
+    return (          
+            
+            <>
+                {editToggle ? (
+
+                    <tr>               
+                        <form onSubmit={e => handleEdit(e)}>
+                            <td>
+                                <input
+                                    type="text"                            
+                                    defaultValue={typeUtilisateur.libelle}
+                                    onChange={(e) => setEditLibelle(e.target.value)}
+                                />
+                            </td>
+
+                            <td>
+                                <button
+                                    onClick={() => setEditToggle(!editToggle)} >                                        
+                                    <FontAwesomeIcon icon={faCheck} className="fa_font" />
+                                    Valider
+                                </button>
+                            </td>
+
+                            <td>
+                                <button >
+                                    <FontAwesomeIcon icon={faTrash} className="fa_font" />
+                                    Supprimer
+                                </button>
+                            </td>
+                       
+                        </form>
+                    </tr>
+                ) : (
+                    <tr>
+                        <td> { typeUtilisateur.libelle } </td>
+
+                        <td> 
+                            <button
+                                onClick={() => setEditToggle(!editToggle)} >                                        
+                                <FontAwesomeIcon icon={faEdit} className="fa_font" />
+                                Modifier
+                            </button> 
+                        </td>
+                    
+                        <td>
+                            <button >
+                                <FontAwesomeIcon icon={faTrash} className="fa_font" />
+                                Supprimer
+                            </button>
+                        </td>
+                    </tr>
+
+                )} 
+            </>
+        
+            
+ 
+       
+             
+    )
+                
+}
+
+export default FormTypeUtilisateur;

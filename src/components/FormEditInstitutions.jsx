@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import isEmpty from "../assets/images/utils/Utils";
 import styled from "styled-components";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const FormEditInstitutions = () => {
   const [editEmail, setEditEmail] = useState("");
@@ -19,7 +19,7 @@ export const FormEditInstitutions = () => {
   const { id } = useParams();
   const institutions = useSelector((state) => state.institutionsReducer);
   const niveaux = useSelector((state) => state.niveauReducer);
-  //   const navigate = useNavigate()
+    const navigate = useNavigate()
 
   const institutionsFilter = institutions.filter((i) => i.id === parseInt(id));
   useEffect(() => {
@@ -30,7 +30,7 @@ export const FormEditInstitutions = () => {
       setEditPrenom(institutionsFilter[0].prenomChefParc);
       setEditNiveau(institutionsFilter[0].niveau.id);
     }
-  }, [institutionsFilter]);
+  }, []);
 
   const handleEdit = (e) => {
     e.preventDefault();
@@ -43,6 +43,7 @@ export const FormEditInstitutions = () => {
       prenomChefParc: editPrenom,
     };
     dispatch(editInstitution(editData));
+    navigate('/institutions');
   };
   return (
     <EditForm className="editForm">

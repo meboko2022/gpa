@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0070)https://gilles-hunault.leria-info.univ-angers.fr/tuteurs/tutregexp.php -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"> 
+
+<link rel="stylesheet" type="text/css" href="./les expressions régulières ; gilles.hunault@univ-angers.fr_files/std.css" title="gh">
+<title>
+ les expressions régulières ; gilles.hunault@univ-angers.fr</title>
+</head>
+<body class="beige_jpg">
+<blockquote>
+<p>&nbsp;</p>
+<p class="align_right">
+<a href="http://validator.w3.org/check?uri=gilles-hunault.leria-info.univ-angers.fr/tuteurs/tutregexp.php">
+<img src="./les expressions régulières ; gilles.hunault@univ-angers.fr_files/valid.png" height="31" width="88" alt="Valid XHTML">
+</a>
+&nbsp;&nbsp;&nbsp;<a href="http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2Fforge.info.univ-angers.fr%2F%7Egh%2Fstd.css">
+<img src="./les expressions régulières ; gilles.hunault@univ-angers.fr_files/css.gif" height="31" width="88" alt="Valid CSS2">
+</a>
+&nbsp;&nbsp;&nbsp;</p>
+
+<p>
+<span class="gvert"><strong>gilles.hunault@univ-angers</strong></span>
+</p>
+
+
+<h1 class="centre">Un petit tuteur sur les Expressions Régulières</h1>
+
+
+<h2 class="centre">(a quick tutorial on regexp -- regular expressions)</h2>
+
+<!-- debut de section (gH) -->
+<table cellpadding="50" class="bgcolor_white" width="50%" summary="cadre général"><tbody><tr><td class="bgcolor_white">
+
+<h2>Table des matières cliquable</h2>
+
+<blockquote>
+
+<p>
+&nbsp;&nbsp;1. <a href="https://gilles-hunault.leria-info.univ-angers.fr/tuteurs/tutregexp.php#tdm1">Notion d'expression régulière simple</a>
+</p>
+
+
+<p>
+&nbsp;&nbsp;2. <a href="https://gilles-hunault.leria-info.univ-angers.fr/tuteurs/tutregexp.php#tdm2">Expressions régulières étendues</a>
+</p>
+
+
+<p>
+&nbsp;&nbsp;3. <a href="https://gilles-hunault.leria-info.univ-angers.fr/tuteurs/tutregexp.php#tdm3">Quelques liens pour aller plus loin</a>
+</p>
+
+</blockquote>
+<!-- fin de section (gH) -->
+</td></tr></tbody></table> 
+<p>&nbsp;</p> 
+<!-- debut de section (gH) -->
+<table cellpadding="50" class="bgcolor_white" width="95%" summary="cadre général"><tbody><tr><td class="bgcolor_white">
+
+<h2>1. <a name="tdm1">Notion d'expression régulière simple</a></h2>
+
+<blockquote>
+
+<p class="texte">
+Il arrive souvent qu'on ait à manipuler des groupes de valeurs numériques ou caractères. 
+Par exemple, à partir d'un numéro de plaque d'immatriculation de voiture des années 80 
+comme <span class="gvert">322 RK 75</span> on peut déduire le département (ici <span class="gvert">75</span>). De même, si 
+<span class="gvert">H001, </span><span class="gvert">K002, </span><span class="gvert">I003...</span>désignent des numéros de batiments et de bureaux, on est capable de dire qu'il s'agit 
+des batiments <span class="gvert">H</span>, <span class="gvert">I</span> et <span class="gvert">K</span>. Enfin, si on décortique une URL comme<strong>&lt;a href="http://www.google.fr"&nbsp;class="mongoog"&gt;Google&nbsp;!&lt;/a&gt;</strong> on peut trouver qu'il s'agit d'un site français (<strong>.fr</strong>). Pour décrire comment ces groupes de valeurs sont définis, on utilise des modèles (ou motifs, patterns, règles ...) 
+qui sont en fait des chaînes de caractères dont certains caractères jouent une rôle particulier.
+
+</p>
+
+
+<p class="texte">
+On nomme «expression régulière» une chaine de caractères qui définit les règles de description de ces groupes de valeur. 
+Il serait plus correct de dire «<a href="http://fr.wikipedia.org/wiki/Expression_rationnelle">expression rationnelle</a>» comme en théorie des <a href="http://fr.wikipedia.org/wiki/Langage_formel">langages formels</a> et des <a href="http://fr.wikipedia.org/wiki/Th%E9orie_des_expressions_rationnelles">langages rationnels</a>, mais l'usage 
+veut qu'on utilise la mauvaise traduction française expression régulière pour le terme anglais 
+<a href="http://en.wikipedia.org/wiki/Regular_expression">regular expression</a>, souvent compressé  en le <a href="http://fr.wikipedia.org/wiki/Mot-valise">mot-valise</a><em> regexp</em>. On peut se servir des expressions régulières pour
+
+</p>
+
+<ol>
+<li><span class="gvert">tester</span> si une valeur correspond à un modèle ;</li>
+<li><span class="grouge">décomposer</span> une valeur en fonction des différentes parties du modèle ;</li>
+<li><span class="gbleuf">remplacer</span> (ou <span class="gbleuf">reformater</span>) une valeur en fonction des différentes parties du modèle.</li>
+</ol>
+
+<p class="texte">
+Le grand intérêt des expressions régulières est qu'elles permettent de programmer de façon compacte  sans avoir constamment à chercher la position du début d'une sous-chaine, ni à enchainer des tests de cas  ou de parcours de chaines. Cela signifie qu'en contrepartie d'un petit effort d'écriture de l'expression régulère, on obtient  les chaines de caractères désirées en une seule instruction à la place d'une dizaine (ou plus) de lignes si on devait écrire  le programme correspondant avec les seules fonctions classiques sur chaines de caractères. Les expressions régulières  sont donc un outil puissant qu'il convient d'apprendre et de maitriser.
+</p>
+
+
+<p class="texte">
+Il n'y a pas une définition unique et standard des caractères spéciaux ("ou métacaractère") mis en jeu dans les modèles 
+mais plutôt des familles de définition. On distingue en général les définitions simples et les définitions avancées 
+(ou "étendues"). Il semblerait qu'au fil des années, les définitions PERL des expressions régulières soient devenues 
+la référence, au détriment de celle des expressions régulières <a href="http://fr.wikipedia.org/wiki/POSIX">POSIX</a> et nous allons d'abord les utiliser avant de voir 
+ éventuellement d'autres définitions.
+</p>
+
+
+<p class="texte">
+Au niveau élémentaire, toute lettre est une expression régulière (que nous abrégerons en ER) et tout chiffre est une expression régulière. Les caractéres spéciaux ^ et $ sont des métacaractères de positionnement (on dit aussi d'ancrage) : 
+^ signifie en début de chaine et $ en fin de chaine. Ainsi ^06 signifie «toute chaine qui commence par 06» alors 
+que fr$ signifie «toute chaine qui se termine par les deux lettres <strong>fr</strong>». 
+
+</p>
+
+
+<p class="texte">
+Afin de définir un modèle (ou "règle"), les caractères ? + et * prennent une signification particulière dite de répétition : 
+
+</p>
+
+<blockquote>
+
+<p>
+? signifie une répétition 0 ou 1 fois du sous-modèle qui le précède<br>
++ signifie une répétition d'au moins 1 fois du sous-modèle qui le précède<br>
+* signifie une répétition de 0 fois ou plus du sous-modèle qui le précède
+</p>
+
+</blockquote>
+
+<p class="texte">
+Si aucun caractère de répétition ne suit une ER, alors l'ER est considérée comme présente exactement une et une seule fois. Ainsi  ABC correspond à la chaine ABC alors que AB*C correspond aux sous-modèles A, B* et C c'est-à-dire aux chaines AC, ABC, ABBC, ABBBC... c'est-à-dire un A puis un nombre quelconque (éventuel nul) de B puis un C.
+</p>
+
+
+<p class="texte">
+Il est possible d'utiliser les parenthèses ( et ) pour indiquer un sous-modèle sur lequel doit s'appliquer la répétition. On peut aussi utiliser la barre droite | pour indiquer une alternative entre deux ou plusieurs éléments.  Ainsi (AB)+ signifie AB ou ABAB ou ABABAB... c'est-à-dire une succession de AB,  alors que A+B+ signifie des A suivis de B et que  (A|B)+ signifie une chaine quelconque avec des A et/ou des B. 
+</p>
+
+
+<p class="texte">
+Pour signifier n'importe quel caractère (ce qui inclut les lettres, les chiffres mais aussi les symboles)  on utilise le caractère&nbsp;.&nbsp; ("point") ; si on veut désigner le "vrai" point, on doit écrire l'ER \. ;  les caractères [ et ] permettent de définir une classe (avec le caractère - comme indication d'étendue).  Enfin, le symbole ^ en début de classe signifie qu'on ne veut pas des éléments qui sont dans la classe. Voici donc quelques exemples simples avec ces caractères pour spécifier des nombres ou des listes de nombres :
+</p>
+
+<blockquote>
+
+<table border="1" cellpadding="10" class="collapse" summary="?">
+<tbody><tr>
+<th align="center">Expression régulière</th>
+<th align="center">Signification</th>
+</tr>
+<tr>
+<td align="left">[0-9]</td>
+<td align="left">chaine contenant un chiffre</td>
+</tr>
+<tr>
+<td align="left">^[0-9]$</td>
+<td align="left">chaine restreinte à un seul chiffre</td>
+</tr>
+<tr>
+<td align="left">^[0-9]+$</td>
+<td align="left">chaine non vide qui contient un nombre entier (y compris 00, 000001...)</td>
+</tr>
+<tr>
+<td align="left">^[0-9]*$</td>
+<td align="left">chaine vide ou qui contient un nombre entier (y compris 00, 000001...)</td>
+</tr>
+<tr>
+<td align="left">^[ 0-9]*$</td>
+<td align="left">chaine qui contient des entiers séparés par un ou plusieurs espaces</td>
+</tr>
+<tr>
+<td align="left">([1-9]?[0-9])|100</td>
+<td align="left">un entier de 0 à 100 (sans 00, 01...)</td>
+</tr>
+<tr>
+<td align="left">-?[0-9]</td>
+<td align="left">un chiffre éventuellement précédé du signe moins</td>
+</tr>
+<tr>
+<td align="left">(+|-)[0-9]+</td>
+<td align="left">un entier obligatoirement signé (y compris +0, -0000...)</td>
+</tr>
+<tr>
+<td align="left">(+|-)?[0-9]+</td>
+<td align="left">un entier éventuellement signé (y compris +0, -0000...)</td>
+</tr>
+</tbody></table>
+
+</blockquote>
+
+<p class="texte">
+ Et voici quelques exemples simples avec des chaines de caractères :
+</p>
+
+<blockquote>
+
+<table border="1" cellpadding="10" class="collapse" summary="?">
+<tbody><tr>
+<th align="center">Expression régulière</th>
+<th align="center">Signification</th>
+</tr>
+<tr>
+<td align="left">[A-Z]</td>
+<td align="left">chaine contenant une lettre en majuscule (sans majuscule accentuée)</td>
+</tr>
+<tr>
+<td align="left">^[a-z]+$</td>
+<td align="left">chaine restreinte à un seul mot non vide en minuscule (sans lettre accentuée)</td>
+</tr>
+<tr>
+<td align="left">^[ATGC]+$</td>
+<td align="left">chaine non vide qui ne contient que les 4 lettres majuscules indiquées</td>
+</tr>
+<tr>
+<td align="left">[A-Z][A-Z]+</td>
+<td align="left">chaine contenant au moins deux majuscules consécutives</td>
+</tr>
+<tr>
+<td align="left">^[A-Z][a-z]*$</td>
+<td align="left">chaine qui contient un seul mot dont l'initiale est en majuscule et le reste en minuscules</td>
+</tr>
+<tr>
+<td align="left">^[0-9]?[0-9]?[0-9]?[0-9][A-Z][A-Z]$</td>
+<td align="left">chaine composée uniquement de 1 à 4 chiffres suivi de deux lettres en majuscules</td>
+</tr>
+<tr>
+<td align="left">^[0-9]?[0-9]?[0-9]?[0-9]&nbsp;[A-Z][A-Z]$</td>
+<td align="left">idem mais avec un espace entre les chiffres et les lettres</td>
+</tr>
+<tr>
+<td align="left">[A-Z][^0-9]</td>
+<td align="left">une chaine contenant une majuscule non suivie d'un chiffre</td>
+</tr>
+</tbody></table>
+
+</blockquote>
+
+<p class="texte">
+Les caractères spéciaux comme tabulation, saut de ligne... ont une représentation classique en tant  qu'ER, comme par exemple <strong>\t</strong> pour tabulation, <strong>\n</strong> pour saut de ligne (Unix)... Voir notamment  leur liste dans la page <a href="http://perldoc.perl.org/perlre.html">perlre</a> à la rubrique <span class="gbleu"><em>Escape sequences</em></span>.
+</p>
+
+</blockquote>
+
+<h2>2. <a name="tdm2">Expressions régulières étendues</a></h2>
+
+<blockquote>
+
+<p class="texte">
+Il est clair que les ER, ce n'est pas clair ! Ou, en tous cas, pas très lisible.  En particulier, la répétition quantifiée (par exemple de 8 à  20 chiffres) n'est pas simple à écrire. C'est pourquoi, avec les expressions régulières étendues,  on dispose d'une syntaxe plus complète mais encore plus illisible. Elle concerne les répétitions,  les ensembles typés classiques et l'extraction de sous-chaine(s).
+</p>
+
+
+<p class="texte">
+En syntaxe étendue, la répétition peut s'écrire <span class="gvert">{min,max}</span> si elle doit correspondre à au moins <span class="gvert">min</span> fois et au plus <span class="gvert">max</span> fois avec comme cas particuliers <span class="gvert">{nbf}</span> si on veut une répétition d'exactement nbf fois, <span class="gvert">{min,}</span> pour indiquer au moins <span class="gvert">min</span> répétitions et <span class="gvert">{,max}</span> pour indiquer au plus <span class="gvert">max</span> répétitions.  Les symboles précédents ? * et +  en sont donc des cas particuliers définis respectivement par <span class="gvert">{0,1}</span>, <span class="gvert">{0,}</span> et <span class="gvert">{1,}</span>. 
+</p>
+
+
+<p class="texte">
+Les ensembles typés classiques sont définis en POSIX par des classes avec un mot encadré de : et en PERL par des lettres précédées d'un anti-slash. Ainsi un chiffre, écrit précédemment <span class="gvert">[0-9]</span> se note <span class="grouge">[:digit:]</span> en POSIX et <span class="grouge">\d</span> en PERL. PERL propose astucieusement et de façon consise, comme souvent, d'utiliser la  version majuscule comme opposé de classe. Ainsi <span class="grouge">\D</span> signifie <span class="grouge">non \d</span> soit encore <span class="gvert">[^0-9]</span> dans la syntaxe originale. Parmi les ensembles classiques, on trouve les mots (mais à l'américaine, sans accent) notés <span class="grouge">\w</span> , les symboles de ponctuation, les  caractères "blancs" ou "d'espace" (comme la tabulation, le retour à la ligne...) notés <span class="grouge">\s</span>, les limites de mots, de chaines.... On pourra consulter les liens <a href="http://en.wikipedia.org/wiki/Regular_expression#POSIX_character_classes">POSIX character classes</a> et <a href="http://perldoc.perl.org/perlre.html">PERL Character Classes</a> (section Character-Classes-and-other-Special-EscapesCharacter-Classes-and-other-Special-Escapes) pour le détail de ces ensembles. 
+</p>
+
+
+<p class="texte">
+ Avec un peu d'entrainement, on arrive facilement à écrire des ER comme :
+</p>
+
+<blockquote>
+
+<table border="1" cellpadding="10" class="collapse" summary="?">
+<tbody><tr>
+<th align="center">Expression régulière</th>
+<th align="center">Signification</th>
+</tr>
+<tr>
+<td align="left">\d{10}</td>
+<td align="left">un numéro de téléphone (dix chiffres)</td>
+</tr>
+<tr>
+<td align="left"><span class="gbleuf">\d{1,4}</span><span class="grouge">[A-Z]{2}</span><span class="gvert">\d{2}</span></td>
+<td align="left">anciennes plaques d'immatriculation : de 1 à 4 chiffres, 2 lettres exactement, 2 chiffres exactement</td>
+</tr>
+<tr>
+<td align="left"><span class="gbleu">[A-Z]{2}</span><span class="grouge">-</span><span class="gvertf">\d{3}</span><span class="grouge">-</span><span class="gbleu">[A-Z]{2}</span></td>
+<td align="left">nouvelles plaques : 2 lettres, un tiret, 3 chiffres, un tiret, 2 lettres</td>
+</tr>
+</tbody></table>
+
+</blockquote>
+
+<p class="texte">
+La recherche de sous-modèles et l'utilisation de modèles partiels précédents (backreferences) complique  encore l'écriture des ER mais rend de nombreux services. PERL utilise par défaut un mode gourmand ou  glouton (<em>greedy</em>) qui peut être converti en un mode fainéant (<em>lazy</em>) via le  point d'interrogation. En d'autres termes, avec le point d'interrogation on s'arrête à la première  correspondance alors que par défaut on va jusqu'à la dernière correspondance. 
+</p>
+
+
+<p class="texte">
+ Si on utilise des parenthèses dans une ER autour d'une répétition alors PERL mémorise les correspondances  et les nomme <span class="grouge">$1</span>,<span class="grouge">$2</span> alors que d'autres langages les notent <span class="grouge">\1</span>,<span class="grouge">\2</span>... 
+</p>
+
+
+<p class="texte">
+ Par exemple l'ER <span class="grouge">".*"</span> utilisera le premier et le dernier symbole <span class="grouge">"</span> comme correspondances alors que <span class="grouge">"(.*?)"</span> utilisera le premier symbole <span class="grouge">"</span> et le suivant comme correspondances. Ainsi, avec la chaine <span class="gvert">&lt;table id="tableau1" class="essai"&gt;</span> la première ER désigne tout le texte <span class="gvert">tableau1" class="essai</span> alors qu'avec la seconde, seul <span class="gvert">tableau1</span> correspond et de plus ce texte est "capturé". 
+</p>
+
+</blockquote>
+
+<h2>3. <a name="tdm3">Quelques liens pour aller plus loin</a></h2>
+
+<blockquote>
+
+<h3>3.1 Quelques références</h3>
+
+<blockquote>
+
+<p class="texte">
+ La notion d'ER étant transversale, on ne s'étonnera pas de la retrouver dans tous les langages de programmation,  avec parfois quelques différences...
+</p>
+
+<ul>
+<li>
+<p>
+<a href="http://perldoc.perl.org/perlre.html">perlre</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://perl.mines-albi.fr/DocFr/perlretut.html">perlretut</a> (en français) 
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://php.net/manual/fr/reference.pcre.pattern.syntax.php">php pcre</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://www.w3schools.com/jsref/jsref_obj_regexp.asp">javascript regexp</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://docs.python.org/3.1/library/re.html">python 3 regexp</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://www.ruby-doc.org/core-1.9.3/Regexp.html">ruby 1.9 rexgexp</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://www2.sas.com/proceedings/sugi29/265-29.pdf">perl regexp in sas 9</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://finzi.psych.upenn.edu/R/library/base/html/grep.html">R regexp</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://www.regular-expressions.info/xml.html">xml regexp ("pattern")</a>
+</p>
+
+</li>
+</ul>
+</blockquote>
+
+<h3>3.2 Tester en ligne des expressions régulières</h3>
+
+<blockquote>
+
+<p class="texte">
+ Il est parfois difficile de s'y retrouver, dans les expressions régulières. Heureusement, de  nombreux sites permettent de tester et de mettre au point une ER avant de l'incorporer dans un  programme. On n'oubliera pas de documenter l'ER, comme dans le fameux exemple pour <a href="https://gilles-hunault.leria-info.univ-angers.fr/Scripts/s1p3.php?solutions=0#tdm7">striphtml</a>. 
+</p>
+
+
+<p class="texte">
+ Les deux meilleurs sites (selon nos critères) que nous conseillons sont  
+</p>
+
+<ul>
+<li>
+<p>
+<a href="http://rubular.com/">Rubular</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="https://regex101.com/">regex101</a>
+</p>
+
+</li>
+</ul>
+
+<p class="texte">
+ Mais il existe bien sûr de nombreux autres sites traitant des ER, comme  
+</p>
+
+<ul>
+<li>
+<p>
+<a href="http://www.xul.fr/ecmascript/expression-reguliere-demo.php">XUL js</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://www.annuaire-info.com/outil-referencement/expression-reguliere/">Test d'expression régulière</a>
+</p>
+
+</li>
+<li>
+<p>
+<a href="http://quentinc.net/testeur-expressions-regulieres">Testeur d'expressions régulières javascript</a>
+</p>
+
+</li>
+</ul>
+</blockquote>
+
+<h3>3.3 Les expressions régulières dans un contexte de vérification et de remplacement silencieux</h3>
+
+<blockquote>
+
+<p class="texte">
+ Lorsqu'on écrit des pages Web avec des formulaires et du texte à saisir, on est souvent confronté à la  vérification des données saisies.  Vérifier en local avec Javascript, depuis la page que la saisie correspond à ce qui était attendu évite des allers et retours   au niveau du serveur. Cela permet aussi de corriger (sans le montrer explicitement) la saisie pour éviter des particularismes.  Ainsi, la plupart des langages informatiques, programmés en anglais, ne considèrent pas <span class="gbleu">3,2</span> comme la représentation  correcte de <strong>32/10</strong> et s'attendent à <span class="gbleu">3.2</span> avec le point comme séparateur décimal.  Réaliser cela avec une expression régulière se fait bien sûr en une seule ligne, sans compter la vérification "rapide" d'une  chaine correspondant à une adresse mail via <strong> [a-z][-._a-z0-9]+@[a-z][-._a-z0-9]+\.[a-z]{2}</strong>, plus facile à paraphraser via la colorisation <span class="gbleu">[a-z]</span><span class="grouge">[-._a-z0-9]+</span><span class="gvertf">@</span><span class="gbleu">[a-z]</span><span class="grouge">[-._a-z0-9]+</span><strong>\.</strong><span class="gbleu">[a-z]{2}</span>. 
+</p>
+
+
+<p class="texte">
+ Dans le cadre de l'évaluation de réponses textuelles, les expressions régulières permettent de "tolérer" des "petites fautes". Ainsi, mettre <strong>vert?</strong> comme couleur de réponse accepte les deux chaines <strong>ver</strong> et <strong>vert</strong> puisque <strong>vert?</strong> se lit <span class="gvertf">ver</span><span class="grouge">t?</span> et signifie «<em> les trois lettres <strong>ver</strong> puis éventuellement </em><em> la lettre </em><strong>t</strong>». De même, mettre <strong>ball?l?on</strong> accepte les trois écritures <strong>balon</strong>, <strong>ballon</strong> et <strong>balllon</strong>.  Pour la langue française et les h muets, les ambiguités i/y, les expressions régulières permettent d'accepter <strong>h?ier</strong> pour hier, <strong>ps[yi]ch?ologie?/(ph|f)[yi]lo[sz]o(ph|f)ie?</strong>, pour psychologie/philosophie, etc.  Cela peut aussi servir pour la recherche de noms propres étrangers quand on ne sait pas où sont les h, w et y comme pour les  personnes nommées <strong>Warshowsky</strong>, <strong>Schwarzkopf</strong>, <span class="gbleu">  &#1063;&#1077;&#1073;&#1067;&#1064;&#1243;&#1042; </span> (<strong>Tchebychev/Tshebitcheff</strong>)...
+</p>
+
+</blockquote>
+</blockquote>
+<!-- fin de section (gH) -->
+</td></tr></tbody></table> 
+<p>&nbsp;</p> 
+<p>&nbsp;</p>
+<!-- fin de page standard (gH) -->
+<p>&nbsp;</p><p>
+<a href="http://www.info.univ-angers.fr/~gh/"> 
+<img src="./les expressions régulières ; gilles.hunault@univ-angers.fr_files/return.gif" alt="retour gH"></a> 
+&nbsp;&nbsp;&nbsp;Retour à la page principale de &nbsp; 
+<span class="coulGH">(gH)</span>
+</p>
+<p>&nbsp;</p> 
+</blockquote> 
+ 
+ 
+</body></html>
