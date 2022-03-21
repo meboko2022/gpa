@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { editNiveau } from "../actions/Niveau.action";
+import { editNiveau } from "../actions/niveau.action";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
